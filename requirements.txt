@@ -1,6 +1,0 @@
-Flask
-transformers
-flask-cors
-langid
-sentencepiece
-protobuf
