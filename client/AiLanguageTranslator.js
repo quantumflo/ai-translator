@@ -1,4 +1,5 @@
 const template = document.createElement('template');
+import { languages } from "./languages";
 template.innerHTML = `
 <style>
     /* Add your styles here */
@@ -42,9 +43,18 @@ class LanguageTranslator extends HTMLElement {
 
     render() {
         this.shadowRoot.appendChild(template.content.cloneNode(true));
+        const selectElement = this.shadowRoot.getElementById('dropdown');
+
+        languages.forEach(language => {
+            const optionElement = document.createElement('option');
+            optionElement.value = language.id;
+            optionElement.textContent = language.displayName;
+            selectElement.appendChild(optionElement);
+        });
     }
 
     async fetchData() {
+        const URL = url = "http://localhost:5000/";
         const selectedLanguage = this.shadowRoot.querySelector('#dropdown').value;
         const inputText = this.shadowRoot.querySelector('#text-box').value;
 
@@ -65,5 +75,7 @@ class LanguageTranslator extends HTMLElement {
         }
     }
 }
+
+
 
 customElements.define('ai-language-translator', LanguageTranslator);
