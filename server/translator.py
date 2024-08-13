@@ -15,6 +15,10 @@ model_name = "facebook/mbart-large-50-many-to-many-mmt"
 model = MBartForConditionalGeneration.from_pretrained(model_name)
 tokenizer = MBart50TokenizerFast.from_pretrained(model_name)
 
+@app.route('/test', methods=['GET'])
+def test():
+    return "hello"
+
 @app.route('/translate', methods=['POST'])
 def translate():
     try:
