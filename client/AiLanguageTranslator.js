@@ -1,5 +1,7 @@
 const template = document.createElement('template');
-import { languages } from "./languages";
+import { languages } from "./languages.js";
+const translationBaseUrl = "http://localhost:5000/";
+
 template.innerHTML = `
 <style>
     /* Add your styles here */
@@ -17,10 +19,6 @@ template.innerHTML = `
     <input type="text" id="text-box" placeholder="Enter something">
     <select id="dropdown">
         <option value="" disabled selected>Select a language</option>
-        <option value="en">English</option>
-        <option value="es">Spanish</option>
-        <option value="fr">French</option>
-        <option value="de">German</option>
     </select>
     <button id="fetch-button">Fetch Data</button>
     <div id="result"></div>
@@ -53,29 +51,78 @@ class LanguageTranslator extends HTMLElement {
         });
     }
 
-    async fetchData() {
-        const URL = url = "http://localhost:5000/";
-        const selectedLanguage = this.shadowRoot.querySelector('#dropdown').value;
+    fetchData = async() => {
+        const outputLanguage = this.shadowRoot.querySelector('#dropdown').value;
         const inputText = this.shadowRoot.querySelector('#text-box').value;
 
-        if (!selectedLanguage || !inputText) {
+        if (!outputLanguage || !inputText) {
             alert('Please select a language and enter some text.');
             return;
         }
 
-        const url = `https://api.example.com/translate?lang=${selectedLanguage}&text=${encodeURIComponent(inputText)}`;
+
         
         try {
-            const response = await fetch(url);
-            if (!response.ok) throw new Error('Network response was not ok');
-            const data = await response.json();
-            this.shadowRoot.querySelector('#result').textContent = `Translated text: ${data.translatedText}`;
+            const {detected_language: detectedLanguage } = await languageDetector( { text: inputText } );
+            const inputLanguage = languages.filter( lang => lang.id.includes( detectedLanguage ) )[0];
+            console.log( 'Detected Language:', inputLanguage.displayName );
+            const translationResponse = await queryTranslation( inputText, inputLanguage.id, outputLanguage );
+            console.log( 'translationResponse: ', translationResponse.translated_text );
+            this.shadowRoot.querySelector('#result').textContent = `Translated text: ${translationResponse.translated_text}`;
         } catch (error) {
             this.shadowRoot.querySelector('#result').textContent = `Error: ${error.message}`;
         }
     }
 }
 
+const queryTranslation = async( input, inputLanguageId, outputLanguageId ) =>{
+    const data = {
+        src_lang: inputLanguageId,
+        tgt_lang: outputLanguageId,
+        text: input
+    };
+    try {
+        const response = await fetch(
+            `${translationBaseUrl}/translate`,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify( data )
+            }
+        );
+        if ( !response.ok ) {
+            throw new Error( `HTTP error! status: ${response.status}` );
+        }
+        return await response.json();
+    } catch ( error ) {
+        console.error( 'Error during API call:', error );
+        return null;
+    }
+};
 
+const languageDetector = async( data ) =>{
+    console.log( data );
+    try {
+        const response = await fetch(
+            `${translationBaseUrl}/detect_language`,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify( data )
+            }
+        );
+        if ( !response.ok ) {
+            throw new Error( `HTTP error! status: ${response.status}` );
+        }
+        return await response.json();
+    } catch ( error ) {
+        console.error( 'Error during API call:', error );
+        return null;
+    }
+};
 
 customElements.define('ai-language-translator', LanguageTranslator);
