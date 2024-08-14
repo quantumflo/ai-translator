@@ -1,0 +1,34 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #121212;
+    color: #e0e0e0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+header {
+    background-color: #1e1e1e;
+    color: orangered;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+header img.header-icon {
+    width: 70px;
+    height: auto;
+    margin-right: 10px;
+}
+
+header h1 {
+    margin: 0;
+}
+
+main {
+    flex: 1;
+}
