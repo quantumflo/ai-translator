@@ -37,18 +37,19 @@ AI Translator is a web-based translation tool that leverages cutting-edge AI mod
    ```
 
 3. Start the Flask and FastAPI servers.
+   NOTE: Start either flask or FastAPI server
    ```bash
    python translator.py  # Flask server
    uvicorn main:translator --reload  # FastAPI server
    ```
 
-4. Serve the frontend using a local server.
+5. Serve the frontend using a local server.
    ```bash
    cd client
    python -m http.server 3000
    ```
 
-5. Open the application in your web browser.
+6. Open the application in your web browser.
    ```
    http://localhost:3000
    ```
