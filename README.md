@@ -23,8 +23,6 @@ AI Translator is a web-based translation tool that leverages cutting-edge AI mod
 
 ### Prerequisites
 - Python 3.x
-- Node.js (for frontend dependencies, if any)
-- Virtual environment tool (optional but recommended)
 
 ### Steps
 1. Clone the repository.
