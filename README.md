@@ -5,7 +5,7 @@
 Python
 
 ## Overview
-AI Translator is a web-based translation tool that leverages cutting-edge AI models to provide real-time language translation. The application features a modern, responsive front-end built using Web Components, while the backend is powered by Flask and FastAPI frameworks. The AI capabilities are enabled through Hugging Face's Transformers API and an SLM (Statistical Language Model) model.
+AI Translator is a web-based translation tool that leverages cutting-edge AI models to provide real-time language translation. The application features a modern, responsive front-end built using Web Components, while the backend is powered by Flask and FastAPI frameworks. The AI capabilities are enabled through Hugging Face's Transformers API and an SLM (Small Language Model) model.
 
 ## Tools and Technologies
 
